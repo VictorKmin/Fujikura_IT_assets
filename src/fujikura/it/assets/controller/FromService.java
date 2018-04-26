@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 /**
  * @author GlobalRoot
  */
-public class fromService extends javax.swing.JFrame {
+public class FromService extends javax.swing.JFrame {
 
     private final String DBip = "localhost";
     private final String DBip2 = "192.168.0.102";
@@ -40,7 +40,7 @@ public class fromService extends javax.swing.JFrame {
     transaction trans = new transaction();
     transaction trans2 = new transaction();
 
-    public fromService() {
+    public FromService() {
         initComponents();
         initComboBox();
     }
@@ -116,7 +116,7 @@ public class fromService extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Неправильний або не існуючий сеерійний номер", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
         } catch (IOException | SQLException ex) {
-            Logger.getLogger(fromService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FromService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -124,16 +124,13 @@ public class fromService extends javax.swing.JFrame {
     public void transaction() {
         try {
             Database db = new Database();
-            System.out.println("I am in transaction");
             trans2.setSn(jTextField3.getText().trim());
             System.out.println(jTextField3.getText().trim());
             trans2.setUser(Login_Form.username);
             System.out.println(Login_Form.username);
-            trans2.setAction("From_service");
             db.transaction(trans2);
-            System.out.println("ТРАНАЗКЦІЮ ПРОВЕДЕНО");
         } catch (IOException | SQLException ex) {
-            Logger.getLogger(fromService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FromService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -363,21 +360,19 @@ public class fromService extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(fromService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FromService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(fromService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FromService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(fromService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FromService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(fromService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FromService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new fromService().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FromService().setVisible(true);
         });
     }
 

@@ -365,7 +365,6 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
             while (result.next()) {
                 jComboBox1.addItem(result.getString("models"));
             }
-            // НЕ ЗАБУВАТИ ЗАКРИВАТИ КОНЕКШЕНИ !!!!!!!!
             preparedStatement.close();
             result.close();
             connection.close();
@@ -418,7 +417,7 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
         trans.setSn(jTextField1.getText().trim());
         trans.setModel(String.valueOf(jComboBox1.getSelectedItem()));
         trans.setSupplier(String.valueOf(jComboBox2.getSelectedItem()));
-        trans.setWarranty(warranty);
+        trans.setWarranty((int) jComboBox3.getSelectedItem());
         trans.setLocation(String.valueOf(jComboBox4.getSelectedItem()));
         trans.setDepartment("Stock");
         // Вношу в базу обєкт

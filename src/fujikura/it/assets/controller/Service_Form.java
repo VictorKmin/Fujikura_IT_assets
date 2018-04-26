@@ -133,7 +133,7 @@ public class Service_Form extends javax.swing.JFrame {
 
     // Button On Service
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new toService().setVisible(true);
+        new ToService().setVisible(true);
         dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -141,7 +141,7 @@ public class Service_Form extends javax.swing.JFrame {
 
     // button From Service
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new fromService().setVisible(true);
+        new FromService().setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 

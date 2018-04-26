@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 /**
  * @author GlobalRoot
  */
-public class toService extends javax.swing.JFrame {
+public class ToService extends javax.swing.JFrame {
 
     private final String DBip = "localhost";
     private final String DBip2 = "192.168.0.102";
@@ -40,7 +40,7 @@ public class toService extends javax.swing.JFrame {
     transaction trans2 = new transaction();
 
 
-    public toService() {
+    public ToService() {
         initComponents();
         initComboBox();
         jLabel11.setVisible(false);
@@ -351,14 +351,14 @@ public class toService extends javax.swing.JFrame {
         }
     }
 
-    public void transaction() throws IOException, SQLException {
+    public void transaction() throws IOException, SQLException, ClassNotFoundException {
         Database db = new Database();
         trans2.setSn(jTextField2.getText().trim());
         trans2.setUser(Login_Form.username);
         trans2.setSup(String.valueOf(jComboBox2.getSelectedItem()));
         //Внесення
         trans2.setAction("on_service");
-//       trans2.setId_action(db.id_action_stock(serial));
+       trans2.setId_action(db.id_action_stock(jTextField2.getText().trim()));
         db.transaction(trans2);
     }
 
@@ -406,6 +406,8 @@ public class toService extends javax.swing.JFrame {
 //            jComboBox2.
         } catch (IOException | SQLException ex) {
             Logger.getLogger(Service_Form.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ToService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_jButton4ActionPerformed
