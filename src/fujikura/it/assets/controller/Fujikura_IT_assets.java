@@ -14,5 +14,5 @@ public class Fujikura_IT_assets {
         // TODO code application logic here
         new Login_Form().setVisible(true);
     }
-    
+
 }

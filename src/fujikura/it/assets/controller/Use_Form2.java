@@ -7,6 +7,7 @@ package fujikura.it.assets.controller;
 
 import fujikura.it.assets.dao.transaction;
 import fujikura.it.assets.database.Database;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -22,77 +23,74 @@ import javax.swing.JOptionPane;
 
 public class Use_Form2 extends javax.swing.JFrame {
 
-   int a = -1;
+    int a = -1;
+
     public Use_Form2() throws SQLException {
         initComponents();
         initComboBox();
-        
-        
-        
-        
-         // Ставлю значення за замовчуванням null
+
+
+        // Ставлю значення за замовчуванням null
         jComboBox2.setSelectedIndex(a);
         jComboBox3.setSelectedIndex(a);
         jComboBox5.setSelectedIndex(a);
-        
+
         //Блокую доступ до кнопок InsiseFactory, Department, OK
         jComboBox3.setEnabled(false);
         jComboBox5.setEnabled(false);
         jButton1.setEnabled(false);
         jLabel11.setVisible(false);
-        
+
     }
+
     // Ініціалізую змінні для зєдання з базою
     private Connection connection; // 1C ID
     private Connection connection2; // Location
     private Connection connection3; // Stock (Inssde)
     private Connection connection5; // Department
-    
+
     private PreparedStatement preparedStatement;
     private PreparedStatement preparedStatement2;
     private PreparedStatement preparedStatement3;
     private PreparedStatement preparedStatement5;
     private String url = "jdbc:sqlserver://localhost:1433;databasename=stock";
-    private final String User =  "sa"; 
-    private final String password  = "hk7w2svu";
-     private final String DBip = "localhost";
+    private final String User = "sa";
+    private final String password = "hk7w2svu";
+    private final String DBip = "localhost";
     private final String DBip2 = "192.168.0.102";
-    
+
     transaction trans = new transaction();
     transaction trans2 = new transaction();
-    
-    public boolean TestPort (String ip) throws IOException {
-      //test port 
-      try {
-          Socket test = new Socket();
-          test.setSoTimeout(200);
-          test.connect(new InetSocketAddress(ip, 1433), 55);
-                 
-          test.close();
-          return true;
-      } 
-      catch (UnknownHostException e) {
-           System.out.println("Невідовий хост "+ip);
-        // unknown host
-      } 
-      catch (IOException e) {
-         System.out.println("Порт недоступний "+ip);
-        // io exception, service probably not running
-      }
-      return false;
-      }
-    
-    
-    
+
+    public boolean TestPort(String ip) throws IOException {
+        //test port
+        try {
+            Socket test = new Socket();
+            test.setSoTimeout(200);
+            test.connect(new InetSocketAddress(ip, 1433), 55);
+
+            test.close();
+            return true;
+        } catch (UnknownHostException e) {
+            System.out.println("Невідовий хост " + ip);
+            // unknown host
+        } catch (IOException e) {
+            System.out.println("Порт недоступний " + ip);
+            // io exception, service probably not running
+        }
+        return false;
+    }
+
+
     // Витягує в випадаючі меню всі доступні 1С айдішки, де статус = 0
     public void initComboBox() throws SQLException {
-        
+
         try {
-       
-            if (TestPort(DBip)){
-                this.url="jdbc:jtds:sqlserver://"+DBip+":1433;databasename=stock";
-            }else{
-                this.url="jdbc:jtds:sqlserver://"+DBip2+":1433;databasename=stock";
+
+            if (TestPort(DBip)) {
+                this.url = "jdbc:jtds:sqlserver://" + DBip + ":1433;databasename=stock";
+            } else {
+                this.url = "jdbc:jtds:sqlserver://" + DBip2 + ":1433;databasename=stock";
             }
             connection = DriverManager.getConnection(url, User, password);
             System.out.println("Відбувся конект");
@@ -100,7 +98,7 @@ public class Use_Form2 extends javax.swing.JFrame {
             preparedStatement.executeQuery();
             ResultSet result = preparedStatement.getResultSet();
             System.out.println("Підтягнули таблицю 1C_IDs");
-            
+
             while (result.next()) {
                 jComboBox1.addItem(result.getString("1C_ID"));
                 System.out.println("Я в циклі");
@@ -108,25 +106,25 @@ public class Use_Form2 extends javax.swing.JFrame {
             preparedStatement.close();
             result.close();
             connection.close();
-            
-            } catch (IOException | SQLException ex) {
+
+        } catch (IOException | SQLException ex) {
             Logger.getLogger(INCOMING_Form2.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-           //Дістаю всі локації
-            connection2 = DriverManager.getConnection(url,User,password);
-            preparedStatement2 = connection2.prepareStatement("SELECT [location] FROM [stock].[dbo].[FactoryLoc]");
-            preparedStatement2.executeQuery();
-            ResultSet result2 = preparedStatement2.getResultSet();
-            
-            while (result2.next()) {
-                jComboBox2.addItem(result2.getString("location"));
-            }
-            preparedStatement2.close();
-            result2.close();
-            connection2.close();
-        
-            
+
+        //Дістаю всі локації
+        connection2 = DriverManager.getConnection(url, User, password);
+        preparedStatement2 = connection2.prepareStatement("SELECT [location] FROM [stock].[dbo].[FactoryLoc]");
+        preparedStatement2.executeQuery();
+        ResultSet result2 = preparedStatement2.getResultSet();
+
+        while (result2.next()) {
+            jComboBox2.addItem(result2.getString("location"));
+        }
+        preparedStatement2.close();
+        result2.close();
+        connection2.close();
+
+
 ////              Дістаю всі inside factore (Office/Production)
 //            connection3 = DriverManager.getConnection(url, User, password);
 //            preparedStatement3 = connection3.prepareStatement("SELECT [inside] FROM [stock].[dbo].[insideFactory]");
@@ -139,70 +137,68 @@ public class Use_Form2 extends javax.swing.JFrame {
 //            preparedStatement3.close();
 //            result3.close();
 //            connection3.close();
-        
-}
-    
+
+    }
+
     public void initDepts() throws SQLException {
 //             Дістаю всі департаменти
-            String inside = (String) jComboBox3.getSelectedItem();
-            connection5 = DriverManager.getConnection(url, User, password);
-            preparedStatement5 = connection5.prepareStatement("SELECT [dept] FROM [stock].[dbo].[Department] WHERE [inside_f] = ?");
-            preparedStatement5.setString(1, inside);
-            preparedStatement5.executeQuery();
-            ResultSet result5 = preparedStatement5.getResultSet();
-            
-            while (result5.next()) {
-                jComboBox5.addItem(result5.getString("dept"));
-            }
-            preparedStatement5.close();
-            result5.close();
-            connection5.close();
-}
-    
-     public void selectedInsideFactory() throws IOException, SQLException{
-        
-       
+        String inside = (String) jComboBox3.getSelectedItem();
+        connection5 = DriverManager.getConnection(url, User, password);
+        preparedStatement5 = connection5.prepareStatement("SELECT [dept] FROM [stock].[dbo].[Department] WHERE [inside_f] = ?");
+        preparedStatement5.setString(1, inside);
+        preparedStatement5.executeQuery();
+        ResultSet result5 = preparedStatement5.getResultSet();
+
+        while (result5.next()) {
+            jComboBox5.addItem(result5.getString("dept"));
+        }
+        preparedStatement5.close();
+        result5.close();
+        connection5.close();
+    }
+
+    public void selectedInsideFactory() throws IOException, SQLException {
+
+
         String inside = (String) jComboBox3.getSelectedItem();
         System.out.println("ComBox3 видав " + inside);
         Database db = new Database();
         db.selectDepts(inside);
-        
-}
-    
-    
-    
+
+    }
+
+
     // Перевіряє правильність вводу серійника
-    public boolean CheckSN() throws IOException, SQLException, ClassNotFoundException
-    {
+    public boolean CheckSN() throws IOException, SQLException, ClassNotFoundException {
         Database db = new Database();
-        
+
         String serailNumber = jTextField1.getText().trim();
-        
-        if(db.SN(serailNumber) == false){
-            JOptionPane.showMessageDialog(null,"Серійний номер " + serailNumber + " не знайдено. Перевірьте правильнось вводу","ERROR",JOptionPane.WARNING_MESSAGE);
-           
+
+        if (db.SN(serailNumber) == false) {
+            JOptionPane.showMessageDialog(null, "Серійний номер " + serailNumber + " не знайдено. Перевірьте правильнось вводу", "ERROR", JOptionPane.WARNING_MESSAGE);
+
             return false;
         }
-        if (serailNumber == ""){
+        if (serailNumber == "") {
             return false;
         }
-        
+
         return true;
     }
-    
+
     public boolean checkSnWith1C() throws IOException, SQLException {
         Database db = new Database();
         String sn = jTextField1.getText().trim();
-        
+
         if (db.snWithOneCId(sn) == false) {
-            JOptionPane.showMessageDialog(null,"Cерійному номеру " +sn+ " уже роздано 1С ID.","ERROR",JOptionPane.WARNING_MESSAGE);
-             return false;
+            JOptionPane.showMessageDialog(null, "Cерійному номеру " + sn + " уже роздано 1С ID.", "ERROR", JOptionPane.WARNING_MESSAGE);
+            return false;
         } else {
             System.out.println("checkSnWith1C = true");
             return true;
         }
     }
-    
+
     // Метод привязує до серійника 1С айдішку та оновляє статус на 1 (використаний)
     public void update() throws IOException, SQLException {
         String serailNumber = jTextField1.getText().trim();
@@ -213,7 +209,7 @@ public class Use_Form2 extends javax.swing.JFrame {
         System.out.println("Location = " + loc);
         String dept = String.valueOf(jComboBox5.getSelectedItem());
         System.out.println("Department = " + dept);
-        
+
         Database db = new Database();
         System.out.println("DB connect");
         trans.setSn(serailNumber);
@@ -223,8 +219,8 @@ public class Use_Form2 extends javax.swing.JFrame {
         trans2.setOneC_id(OneC_ID);
         db.updateObject2(trans);
         db.updateStatus(trans2);
-        
-        
+
+
     }
 
     /**
@@ -335,7 +331,7 @@ public class Use_Form2 extends javax.swing.JFrame {
         });
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Copyright by Andriy Zadorozhnyi");
+        jLabel4.setText("Copyright by Victor Kmin");
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("© 2018");
@@ -354,7 +350,7 @@ public class Use_Form2 extends javax.swing.JFrame {
         jLabel5.setText("Select location :");
 
         jComboBox3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Office", "Production" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Office", "Production"}));
         jComboBox3.setSelectedIndex(-1);
         jComboBox3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 194, 255)));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
@@ -388,97 +384,96 @@ public class Use_Form2 extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(13, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(58, 58, 58)
-                                            .addComponent(jLabel6)))
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(103, 103, 103)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel11))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel9))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jTextField1)
-                                        .addComponent(jComboBox1, 0, 133, Short.MAX_VALUE))
-                                    .addComponent(jLabel2)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addGap(40, 40, 40))
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addContainerGap(17, Short.MAX_VALUE)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                        .addComponent(jLabel4)
+                                                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                                .addComponent(jLabel6)
+                                                                                .addGap(46, 46, 46)))
+                                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                                .addGap(103, 103, 103)
+                                                                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE))
+                                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                .addComponent(jLabel11))))
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                        .addComponent(jLabel1)
+                                                                        .addComponent(jLabel3)
+                                                                        .addComponent(jLabel5)
+                                                                        .addComponent(jLabel7)
+                                                                        .addComponent(jLabel9))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                                .addComponent(jTextField1)
+                                                                                .addComponent(jComboBox1, 0, 133, Short.MAX_VALUE))
+                                                                        .addComponent(jLabel2)
+                                                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addGap(40, 40, 40))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(57, 57, 57)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6))
-                    .addComponent(jLabel11))
-                .addContainerGap())
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(29, 29, 29)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(29, 29, 29)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(28, 28, 28)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(31, 31, 31)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(57, 57, 57)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel6))
+                                        .addComponent(jLabel11))
+                                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -488,11 +483,11 @@ public class Use_Form2 extends javax.swing.JFrame {
     }
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {
-                if (jComboBox2.getSelectedItem() != null) {
-                     jLabel11.setVisible(false);
-                     System.out.println("ACTION COMBO 2");
-                     jComboBox3.setEnabled(true);
-            
+        if (jComboBox2.getSelectedItem() != null) {
+            jLabel11.setVisible(false);
+            System.out.println("ACTION COMBO 2");
+            jComboBox3.setEnabled(true);
+
         }
     }
 
@@ -507,20 +502,20 @@ public class Use_Form2 extends javax.swing.JFrame {
         try {
             // КНОПКА ОК
             if (CheckSN() == true) {
-            
+
                 if (checkSnWith1C() == true) {
                     System.out.println("checkSnWith1C() = true");
-                   update();
-                   jTextField1.setText("");
-                   jComboBox1.removeAllItems();
-                   jComboBox2.removeAllItems();
-                   initComboBox();
-                   jLabel11.setVisible(true);
-                
+                    update();
+                    jTextField1.setText("");
+                    jComboBox1.removeAllItems();
+                    jComboBox2.removeAllItems();
+                    initComboBox();
+                    jLabel11.setVisible(true);
+
                 } else {
                     System.out.println("checkSnWith1C() = false");
                 }
-                
+
             } else {
                 System.out.println("jButton1ActionPerformed = false");
             }
@@ -529,8 +524,8 @@ public class Use_Form2 extends javax.swing.JFrame {
             Logger.getLogger(Use_Form2.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
-    }                                        
+
+    }
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
 
@@ -557,11 +552,11 @@ public class Use_Form2 extends javax.swing.JFrame {
         try {
             if (jComboBox3.getSelectedItem() != null) {
                 jComboBox5.setEnabled(true);
-        }
+            }
             selectedInsideFactory();
         } catch (IOException | SQLException ex) {
             Logger.getLogger(INCOMING_Form2.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
@@ -569,7 +564,7 @@ public class Use_Form2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
-               if (jComboBox5.getSelectedItem() != null) {
+        if (jComboBox5.getSelectedItem() != null) {
             jButton1.setEnabled(true);
         }
     }//GEN-LAST:event_jComboBox5ActionPerformed
@@ -595,7 +590,7 @@ public class Use_Form2 extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */

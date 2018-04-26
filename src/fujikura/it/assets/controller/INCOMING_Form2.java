@@ -10,6 +10,7 @@ import com.sun.glass.events.KeyEvent;
 import fujikura.it.assets.dao.Assets;
 import fujikura.it.assets.dao.transaction;
 import fujikura.it.assets.database.Database;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -27,65 +28,62 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
 
     // Змінна, що б зробити jComboBox default value == null
     int a = -1;
+
     public INCOMING_Form2() throws IOException, SQLException {
-       
+
         initComponents();
         initCombobox();
- 
-          // Ставлю значення за замовчуванням null
+
+        // Ставлю значення за замовчуванням null
         jComboBox4.setSelectedIndex(a);
         jTextField1.setEnabled(false);
         jButton2.setEnabled(false);
-        
-        
+
+
         jTextField1.requestFocus();
         jLabel10.setVisible(false);
         jLabel11.setVisible(false);
-        this.setSize(465, 586);
-        this.pack();
         trans = new Assets();
         trans2 = new transaction();
-        
-       
+
+
     }
-    
+
     Assets trans;
     transaction trans2;
-    
+
     private String DBip = "localhost";
     private String DBip2 = "192.168.0.102";
     private String url = "jdbc:sqlserver://localhost:1433;databasename=stock";
-    
-    private final String User =  "sa"; 
-    private final String password  = "hk7w2svu";
-    
+
+    private final String User = "sa";
+    private final String password = "hk7w2svu";
+
     private Connection connection;  // for ComboBox 1 (model)
     private Connection connection2; // for ComboBox 2 (Suplier)
 
     private PreparedStatement preparedStatement;
     private PreparedStatement preparedStatement2;
 
-    public boolean TestPort (String ip) throws IOException {
-      //test port 
-      try {
-          Socket test = new Socket();
-          test.setSoTimeout(200);
-          test.connect(new InetSocketAddress(ip, 1433), 55);
-                 
-          test.close();
-          return true;
-      } 
-      catch (UnknownHostException e) {
-           System.out.println("Невідовий хост "+ip);
-        // unknown host
-      } 
-      catch (IOException e) {
-         System.out.println("Порт недоступний "+ip);
-        // io exception, service probably not running
-      }
-      return false;
-      }
-    
+    public boolean TestPort(String ip) throws IOException {
+        //test port
+        try {
+            Socket test = new Socket();
+            test.setSoTimeout(200);
+            test.connect(new InetSocketAddress(ip, 1433), 55);
+
+            test.close();
+            return true;
+        } catch (UnknownHostException e) {
+            System.out.println("Невідовий хост " + ip);
+            // unknown host
+        } catch (IOException e) {
+            System.out.println("Порт недоступний " + ip);
+            // io exception, service probably not running
+        }
+        return false;
+    }
+
     public static String username;
 
     /**
@@ -141,7 +139,7 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fujikura/it/assets/resource/lojo 65%.jpg"))); // NOI18N
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Copyright by Andriy Zadorozhnyi");
+        jLabel2.setText("Copyright by Victor Kmin");
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("© 2018");
@@ -192,7 +190,7 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
         jLabel8.setText("Warranty:");
 
         jComboBox3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 year", "2 years", "3 years", "4 years" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"1 year", "2 years", "3 years", "4 years"}));
         jComboBox3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 194, 255)));
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -223,7 +221,7 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
         jLabel9.setText("Factory:");
 
         jComboBox4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lviv 1", "Lviv 2", "Nemyriv" }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Lviv 1", "Lviv 2", "Nemyriv"}));
         jComboBox4.setSelectedIndex(-1);
         jComboBox4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 194, 255)));
         jComboBox4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -246,124 +244,124 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(62, 62, 62))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jLabel11)
-                .addGap(26, 26, 26)
-                .addComponent(jLabel10)
-                .addContainerGap(21, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel7)
-                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel9)
-                                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(jLabel1))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(119, 119, 119)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel2)
+                                                .addGap(62, 62, 62))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(56, 56, 56)
+                                                .addComponent(jLabel6)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jLabel11)
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel10)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(49, 49, 49)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel5)
+                                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(jLabel7)
+                                                                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addComponent(jLabel3)
+                                                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addComponent(jLabel9)
+                                                                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                .addComponent(jLabel1))))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(75, 75, 75)
+                                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(119, 119, 119)
+                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(jLabel8))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel10)
-                        .addComponent(jLabel11))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)))
-                .addGap(13, 13, 13))
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(42, 42, 42)
+                                                .addComponent(jLabel7)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(40, 40, 40)
+                                                .addComponent(jLabel8))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                                .addComponent(jLabel9)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(50, 50, 50)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel3)
+                                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                .addGap(39, 39, 39)
+                                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(34, 34, 34)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jLabel10)
+                                                .addComponent(jLabel11))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel6)))
+                                .addGap(13, 13, 13))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    public void initCombobox(){
+
+    public void initCombobox() {
         try {
-            if (TestPort(DBip)){
-                this.url="jdbc:jtds:sqlserver://"+DBip+":1433;databasename=stock";
-            }else{
-                this.url="jdbc:jtds:sqlserver://"+DBip2+":1433;databasename=stock";
+            if (TestPort(DBip)) {
+                this.url = "jdbc:jtds:sqlserver://" + DBip + ":1433;databasename=stock";
+            } else {
+                this.url = "jdbc:jtds:sqlserver://" + DBip2 + ":1433;databasename=stock";
             }
-            
+
             // Підтягує всі модельки з бази
-            connection = DriverManager.getConnection(url,User,password);
+            connection = DriverManager.getConnection(url, User, password);
             preparedStatement = connection.prepareStatement("SELECT [models] FROM [stock].[dbo].[Model]");
             preparedStatement.executeQuery();
             ResultSet result = preparedStatement.getResultSet();
-            
+
             while (result.next()) {
                 jComboBox1.addItem(result.getString("models"));
             }
@@ -372,119 +370,95 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
             result.close();
             connection.close();
             //Підтягує всіх суплаєрів
-            connection2 = DriverManager.getConnection(url,User,password);
+            connection2 = DriverManager.getConnection(url, User, password);
             preparedStatement2 = connection2.prepareStatement("SELECT [supplier] FROM [stock].[dbo].[Supplier]");
             preparedStatement2.executeQuery();
             ResultSet result2 = preparedStatement2.getResultSet();
-            
+
             while (result2.next()) {
                 jComboBox2.addItem(result2.getString("supplier"));
             }
-            // ЗАКРИВАЙ ПОТОКИ !
+
             preparedStatement2.close();
             result2.close();
             connection2.close();
-   
+
         } catch (IOException | SQLException ex) {
             Logger.getLogger(INCOMING_Form2.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    
+
+
     //Перевіряє потоки на співпадіння в базі
-    public boolean CheckSN() throws IOException, SQLException, ClassNotFoundException
-    {
+    public boolean CheckSN() throws IOException, SQLException, ClassNotFoundException {
         Database db = new Database();
-        
+
         String u = jTextField1.getText().trim();
-        
-        if(db.SN(u)== true ){
-            JOptionPane.showMessageDialog(null,"Даний серійний номер уже внесено у базу даних!","Error",JOptionPane.WARNING_MESSAGE);
+
+        if (db.SN(u) == true) {
+            JOptionPane.showMessageDialog(null, "Даний серійний номер уже внесено у базу даних!", "Error", JOptionPane.WARNING_MESSAGE);
             jLabel10.setText("");
             jLabel11.setText("");
             return false;
         }
-        if(u == ""){
-             JOptionPane.showMessageDialog(null,"Будь ласка,введіть серійний номер","Error",JOptionPane.WARNING_MESSAGE);
+        if (u == "") {
+            JOptionPane.showMessageDialog(null, "Будь ласка,введіть серійний номер", "Error", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        
+
         return true;
     }
-    
-//     Первіряє Office/Production
-//    public void selectedInsideFactory() throws IOException, SQLException{
-//        
-//       
-//        String inside = (String) jComboBox5.getSelectedItem();
-//        System.out.println("ComBox5 видав " + inside);
-//        Database db = new Database();
-//        db.selectDepts(inside);
-//        
-//}
-    
-    
+
+
     // Метод вставки в базу нового обєкта (Компа)
-    public void insert() throws IOException, SQLException{
-        String u = jTextField1.getText().trim();
-        String model = "";
-        model = String.valueOf(jComboBox1.getSelectedItem());
-        String supplier = "";
-        supplier = String.valueOf(jComboBox2.getSelectedItem());
-        int warranty;
-        warranty = jComboBox3.getSelectedIndex()+1;
-        String location = "";
-        location = String.valueOf(jComboBox4.getSelectedItem());
-        String dpt = "Stock";
-//        dpt = String.valueOf(jComboBox7.getSelectedItem());
-        
+    public void insert() throws IOException, SQLException {
+
         Database db = new Database();
         // Задаю всім змінним значення
-        trans.setSn(u);
-        trans.setModel(model);
-        trans.setSupplier(supplier);
+        trans.setSn(jTextField1.getText().trim());
+        trans.setModel(String.valueOf(jComboBox1.getSelectedItem()));
+        trans.setSupplier(String.valueOf(jComboBox2.getSelectedItem()));
         trans.setWarranty(warranty);
-        trans.setLocation(location);
-        trans.setDepartment(dpt);
+        trans.setLocation(String.valueOf(jComboBox4.getSelectedItem()));
+        trans.setDepartment("Stock");
         // Вношу в базу обєкт
         db.insertStock(trans);
-        
+
         jTextField1.requestFocus();
         jLabel11.setText(jTextField1.getText().trim());
         jLabel10.setVisible(true);
         jLabel11.setVisible(true);
 
     }
-    
+
     // Метод вставки обєкта в таблицю Transactions. 
     // Юзер який вніс обєкт в базу, та коли
-    public void transaction()  throws IOException, SQLException{
+    public void transaction() throws IOException, SQLException {
         try {
             String u = jTextField1.getText().trim();
-            
+
             Database db = new Database();
             trans2.setSn(u);
             trans2.setUser(Login_Form.username);
             //Внесення
             trans2.setAction("on_stock");
             trans2.setId_action(db.id_action_stock(u));
-            
+
             db.transaction(trans2);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(INCOMING_Form2.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-            
+
     private void jComboBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox6ActionPerformed
-        
-    
+
+
     // Factory
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-            // Чи вибрано шось з факторі
+        // Чи вибрано шось з факторі
         if (jComboBox4.getSelectedItem() != null) {
             jTextField1.setEnabled(true);
         }
@@ -496,15 +470,15 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+
         // Чи введено якийсь верйний номер
         if (jTextField1.getText() != "") {
             jButton2.setEnabled(true);
         }
-        
+
         try {
             // TODO add your handling code here:
-            if(CheckSN() == true){
+            if (CheckSN() == true) {
                 insert();
                 transaction();
                 //Очищає поле вводу
@@ -517,7 +491,7 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
 
     // OK
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        
+
         // Чи введено якийсь cерйний номер
         if (jTextField1.getText() != "") {
             jButton2.setEnabled(true);
@@ -532,26 +506,26 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
     // Компія методу jButton2ActionPerformed тільки при натисканні Ентер
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
 
-         // Чи введено якийсь верйний номер
+        // Чи введено якийсь верйний номер
         if (jTextField1.getText() != "") {
             jButton2.setEnabled(true);
         }
-      
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             try {
                 // TODO add your handling code here:
-                if(CheckSN() == true){
+                if (CheckSN() == true) {
                     insert();
                     transaction();
                     jTextField1.setText("");
-                }   } catch (IOException | SQLException | ClassNotFoundException ex) {
-                    Logger.getLogger(INCOMING_Form2.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } catch (IOException | SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(INCOMING_Form2.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
     }//GEN-LAST:event_jTextField1KeyPressed
 
 
-    
     /**
      * @param args the command line arguments
      */
@@ -587,7 +561,7 @@ public class INCOMING_Form2 extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
