@@ -26,13 +26,9 @@ public class Login_Form extends javax.swing.JFrame {
 
     public static String username;
     private static String version = "1.0";
-//    public static String count;
-//    public static int shift;
 
-    // Повертає логін юзера
     public String get_user() {
 
-        //.trim() видаляє пробіли в кінці і на початку !
         username = jTextField1.getText().trim();
         return username;
     }
@@ -44,7 +40,6 @@ public class Login_Form extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
 
-    //Описуємо вікно логіна
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -229,13 +224,11 @@ public class Login_Form extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         try {
             if (CheckVersion() == true) {
 
@@ -289,16 +282,12 @@ public class Login_Form extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1KeyPressed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
-    // Метод лупить 3 експепшина і вспливаючі вікна. ПОФІКСИТИ !
     private int CheckLogin() throws IOException, SQLException, ClassNotFoundException {
-        // Права юзера
         int r = 0;
-        // Логін 
         String u = jTextField1.getText().trim();
-        // Пароль
         String p = jPasswordField1.getText().trim();
 
         Database db = new Database();
@@ -307,7 +296,6 @@ public class Login_Form extends javax.swing.JFrame {
             System.out.println("no login: " + u);
             JOptionPane.showMessageDialog(null, "Неправильний користувач або пароль", "ВІДМОВЛЕНО У ДОСТУПІ", JOptionPane.WARNING_MESSAGE);
         } else {
-            // Задаєм юзеру право доступу
             r = db.Login_rights(u);
             get_user();
         }
@@ -319,15 +307,12 @@ public class Login_Form extends javax.swing.JFrame {
     public boolean CheckVersion() throws IOException, SQLException, ClassNotFoundException {
         Database db = new Database();
 
-        // Підтягуєм версію програми
         String u = jLabel7.getText().trim();
 
-        // Якщо версія стара, видаємо помилку
         if (db.Version(u) == false) {
             JOptionPane.showMessageDialog(null, "У Вас застаріла версія програми. Зверніться до системного адмніністратора та обновіть її.", "ВІДМОВЛЕНО У ДОСТУПІ", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-
         return true;
     }
 

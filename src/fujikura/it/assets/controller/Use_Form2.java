@@ -28,30 +28,14 @@ public class Use_Form2 extends javax.swing.JFrame {
     public Use_Form2() throws SQLException {
         initComponents();
         initComboBox();
-
-
-        // Ставлю значення за замовчуванням null
-        jComboBox2.setSelectedIndex(a);
-        jComboBox3.setSelectedIndex(a);
-        jComboBox5.setSelectedIndex(a);
-
-        //Блокую доступ до кнопок InsiseFactory, Department, OK
-        jComboBox3.setEnabled(false);
-        jComboBox5.setEnabled(false);
-        jButton1.setEnabled(false);
-        jLabel11.setVisible(false);
-
     }
 
-    // Ініціалізую змінні для зєдання з базою
     private Connection connection; // 1C ID
     private Connection connection2; // Location
-    private Connection connection3; // Stock (Inssde)
     private Connection connection5; // Department
 
     private PreparedStatement preparedStatement;
     private PreparedStatement preparedStatement2;
-    private PreparedStatement preparedStatement3;
     private PreparedStatement preparedStatement5;
     private String url = "jdbc:sqlserver://localhost:1433;databasename=stock";
     private final String User = "sa";
@@ -82,8 +66,8 @@ public class Use_Form2 extends javax.swing.JFrame {
     }
 
 
-    // Витягує в випадаючі меню всі доступні 1С айдішки, де статус = 0
     public void initComboBox() throws SQLException {
+ 
 
         try {
 
@@ -111,7 +95,6 @@ public class Use_Form2 extends javax.swing.JFrame {
             Logger.getLogger(INCOMING_Form2.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //Дістаю всі локації
         connection2 = DriverManager.getConnection(url, User, password);
         preparedStatement2 = connection2.prepareStatement("SELECT [location] FROM [stock].[dbo].[FactoryLoc]");
         preparedStatement2.executeQuery();
@@ -123,25 +106,18 @@ public class Use_Form2 extends javax.swing.JFrame {
         preparedStatement2.close();
         result2.close();
         connection2.close();
+        
+        jComboBox2.setSelectedIndex(a);
+        jComboBox3.setSelectedIndex(a);
+        jComboBox5.setSelectedIndex(a);
 
-
-////              Дістаю всі inside factore (Office/Production)
-//            connection3 = DriverManager.getConnection(url, User, password);
-//            preparedStatement3 = connection3.prepareStatement("SELECT [inside] FROM [stock].[dbo].[insideFactory]");
-//            preparedStatement3.executeQuery();
-//            ResultSet result3 = preparedStatement3.getResultSet();
-//            
-//            while (result3.next()) {
-//                jComboBox3.addItem(result3.getString("inside"));
-//            }
-//            preparedStatement3.close();
-//            result3.close();
-//            connection3.close();
-
+        jComboBox3.setEnabled(false);
+        jComboBox5.setEnabled(false);
+        jButton1.setEnabled(false);
+        jLabel11.setVisible(false);
     }
 
     public void initDepts() throws SQLException {
-//             Дістаю всі департаменти
         String inside = (String) jComboBox3.getSelectedItem();
         connection5 = DriverManager.getConnection(url, User, password);
         preparedStatement5 = connection5.prepareStatement("SELECT [dept] FROM [stock].[dbo].[Department] WHERE [inside_f] = ?");
@@ -159,16 +135,12 @@ public class Use_Form2 extends javax.swing.JFrame {
 
     public void selectedInsideFactory() throws IOException, SQLException {
 
-
         String inside = (String) jComboBox3.getSelectedItem();
         System.out.println("ComBox3 видав " + inside);
         Database db = new Database();
         db.selectDepts(inside);
-
     }
 
-
-    // Перевіряє правильність вводу серійника
     public boolean CheckSN() throws IOException, SQLException, ClassNotFoundException {
         Database db = new Database();
 
@@ -176,13 +148,11 @@ public class Use_Form2 extends javax.swing.JFrame {
 
         if (db.SN(serailNumber) == false) {
             JOptionPane.showMessageDialog(null, "Серійний номер " + serailNumber + " не знайдено. Перевірьте правильнось вводу", "ERROR", JOptionPane.WARNING_MESSAGE);
-
             return false;
         }
         if (serailNumber == "") {
             return false;
         }
-
         return true;
     }
 
@@ -199,7 +169,6 @@ public class Use_Form2 extends javax.swing.JFrame {
         }
     }
 
-    // Метод привязує до серійника 1С айдішку та оновляє статус на 1 (використаний)
     public void update() throws IOException, SQLException {
         String serailNumber = jTextField1.getText().trim();
         System.out.println("SN = " + serailNumber);
@@ -219,8 +188,6 @@ public class Use_Form2 extends javax.swing.JFrame {
         trans2.setOneC_id(OneC_ID);
         db.updateObject2(trans);
         db.updateStatus(trans2);
-
-
     }
 
     /**
@@ -487,22 +454,18 @@ public class Use_Form2 extends javax.swing.JFrame {
             jLabel11.setVisible(false);
             System.out.println("ACTION COMBO 2");
             jComboBox3.setEnabled(true);
-
         }
     }
 
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-        // КНОПКА CANCEL
         new Main_Form().setVisible(true);
         dispose();
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            // КНОПКА ОК
             if (CheckSN() == true) {
-
                 if (checkSnWith1C() == true) {
                     System.out.println("checkSnWith1C() = true");
                     update();
@@ -515,7 +478,6 @@ public class Use_Form2 extends javax.swing.JFrame {
                 } else {
                     System.out.println("checkSnWith1C() = false");
                 }
-
             } else {
                 System.out.println("jButton1ActionPerformed = false");
             }
@@ -523,8 +485,6 @@ public class Use_Form2 extends javax.swing.JFrame {
         } catch (IOException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Use_Form2.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -539,9 +499,7 @@ public class Use_Form2 extends javax.swing.JFrame {
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         if (jComboBox3.getSelectedItem() != null) {
             try {
-//                DefaultComboBoxModel.removeAllElements()
                 jComboBox5.removeAllItems();
-//                jComboBox7.setSelectedItem(null);
                 initDepts();
                 selectedInsideFactory();
                 jComboBox5.setEnabled(true);
@@ -568,7 +526,6 @@ public class Use_Form2 extends javax.swing.JFrame {
             jButton1.setEnabled(true);
         }
     }//GEN-LAST:event_jComboBox5ActionPerformed
-
     /**
      * @param args the command line arguments
      */

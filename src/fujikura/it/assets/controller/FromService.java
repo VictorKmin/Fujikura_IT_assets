@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fujikura.it.assets.controller;
 
 import fujikura.it.assets.dao.transaction;
@@ -21,9 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- * @author GlobalRoot
- */
 public class FromService extends javax.swing.JFrame {
 
     private final String DBip = "localhost";
@@ -43,6 +35,12 @@ public class FromService extends javax.swing.JFrame {
     public FromService() {
         initComponents();
         initComboBox();
+        jLabel15.setVisible(false);
+        jComboBox3.setSelectedIndex(-1);
+        jComboBox3.setEnabled(false);
+        jComboBox4.setSelectedIndex(-1);
+        jComboBox4.setEnabled(false);
+        jButton5.setEnabled(false);
     }
 
     public boolean TestPort(String ip) throws IOException {
@@ -72,7 +70,7 @@ public class FromService extends javax.swing.JFrame {
             } else {
                 this.url = "jdbc:jtds:sqlserver://" + DBip2 + ":1433;databasename=stock";
             }
-            //Підтягує всіх суплаєрів
+            
             connection = DriverManager.getConnection(url, User, password);
             preparedStatement = connection.prepareStatement("SELECT [location] FROM [stock].[dbo].[FactoryLoc]");
             preparedStatement.executeQuery();
@@ -88,14 +86,15 @@ public class FromService extends javax.swing.JFrame {
 
             while (result2.next()) {
                 jComboBox4.addItem(result2.getString("dept"));
-            }
+            }        
             preparedStatement.close();
             preparedStatement2.close();
             result.close();
+            result2.close();
             connection.close();
         } catch (SQLException | IOException ex) {
             Logger.getLogger(Service_Form.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }       
     }
 
     public void fromService() {
@@ -112,6 +111,13 @@ public class FromService extends javax.swing.JFrame {
                 System.out.println("Location is update");
                 db.removeFromService(trans2);
                 System.out.println("Item is removed");
+                jLabel15.setVisible(true);
+                
+                jComboBox3.setSelectedIndex(-1);
+                jComboBox3.setEnabled(false);
+                jComboBox4.setSelectedIndex(-1);
+                jComboBox4.setEnabled(false);
+                jButton5.setEnabled(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Неправильний або не існуючий сеерійний номер", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
@@ -127,9 +133,10 @@ public class FromService extends javax.swing.JFrame {
             trans2.setSn(jTextField3.getText().trim());
             System.out.println(jTextField3.getText().trim());
             trans2.setUser(Login_Form.username);
-            System.out.println(Login_Form.username);
+            trans2.setAction("from_service");
+            trans2.setId_action(db.id_action_stock(jTextField3.getText().trim()));
             db.transaction(trans2);
-        } catch (IOException | SQLException ex) {
+        } catch (IOException | SQLException | ClassNotFoundException ex) {
             Logger.getLogger(FromService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -317,30 +324,36 @@ public class FromService extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyPressed
-
+        jLabel15.setVisible(false);
+        if (jTextField3.getText() != null) {
+            jComboBox3.setEnabled(true);
+        }
     }//GEN-LAST:event_jTextField3KeyPressed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-
+        if (jComboBox3.getSelectedItem() != null) {
+            jComboBox4.setEnabled(true);
+        }
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         new Main_Form().setVisible(true);
         dispose();
-
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        transaction();
         fromService();
+        transaction();    
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-//        jLabel15.setVisible(false);
+
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // TODO add your handling code here:
+        if (jComboBox4.getSelectedItem() != null) {
+            jButton5.setEnabled(true);
+        }
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     /**

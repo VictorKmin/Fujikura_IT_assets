@@ -35,18 +35,12 @@ public class Finance_Form extends javax.swing.JFrame {
 
     File file;
     HashSet<String> test = new HashSet<>();
-
-    //Ініціалізуємо транзакцію.
     transaction trans = new transaction();
     transaction trans2 = new transaction();
-
-    //Метод, який перевіряє 1С айдішки
-    // ГОРИ В АДУ МРАЗЬ !
 
     public boolean checkOneCId() throws IOException, SQLException {
         Database db = new Database();
         String oneC_id = jTextField1.getText().trim();
-        // Якшо в файлі нічого не вибрано
         if (file != null) {
             parse(String.valueOf(file));
             insertFromFile();
@@ -65,20 +59,17 @@ public class Finance_Form extends javax.swing.JFrame {
         return false;
     }
 
-    //Вносить 1С айдішки в базу
     public void insert() throws IOException, SQLException {
         String oneC_id = jTextField1.getText().trim();
         Database db = new Database();
         trans.setOneC_id(oneC_id);
-//         trans2.setSn(u);
         trans2.setUser(Login_Form.username);
-//         trans2.setId_action(db.id_action_stock(u));
+         trans2.setId_action(0);
         db.insertOneC(trans);
         db.trans1C(trans2);
         System.out.println("Все воркає");
     }
 
-    //Вносить 1С айдішки з екель файлу
     public void insertFromFile() throws IOException, SQLException {
         Database db = new Database();
         Iterator<String> iterator = test.iterator();
@@ -87,9 +78,8 @@ public class Finance_Form extends javax.swing.JFrame {
             trans.setUser(Login_Form.username);
             db.insertOneC(trans);
         }
-//         trans2.setSn(u);
         trans2.setUser(Login_Form.username);
-//         trans2.setId_action(db.id_action_stock(u));
+         trans2.setId_action(0);
 
         db.trans1C(trans2);
         System.out.println("INSERT FROM FILE");
@@ -119,13 +109,6 @@ public class Finance_Form extends javax.swing.JFrame {
                     case Cell.CELL_TYPE_STRING:
                         test.add(cell.getStringCellValue());
                         break;
-//                    case Cell.CELL_TYPE_NUMERIC:
-//                        result += cell.getNumericCellValue();
-//                        break;
-//
-//                    case Cell.CELL_TYPE_FORMULA:
-//                        result += cell.getNumericCellValue();
-//                        break;
                     default:
                         result += null;
                         break;

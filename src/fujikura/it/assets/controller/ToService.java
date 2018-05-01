@@ -321,6 +321,7 @@ public class ToService extends javax.swing.JFrame {
             while (result.next()) {
                 jComboBox2.addItem(result.getString("supplier"));
             }
+            jComboBox2.addItem("IT");
             preparedStatement.close();
             result.close();
             connection.close();

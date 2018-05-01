@@ -13,10 +13,6 @@ import java.util.logging.Logger;
 
 public class Main_Form extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login_Form
-     */
-    //Створюємо вікно.
     public Main_Form() {
         initComponents();
     }
@@ -30,7 +26,6 @@ public class Main_Form extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
 
-    //Генеруємо форочку
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -182,7 +177,6 @@ public class Main_Form extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            // TODO add your handling code here:
             new INCOMING_Form2().setVisible(true);
         } catch (IOException | SQLException ex) {
             Logger.getLogger(Main_Form.class.getName()).log(Level.SEVERE, null, ex);
@@ -190,14 +184,14 @@ public class Main_Form extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    // Нижня INCOMING
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
         try {
             new Use_Form2().setVisible(true);
+            dispose();
         } catch (SQLException ex) {
             Logger.getLogger(Main_Form.class.getName()).log(Level.SEVERE, null, ex);
         }
-        dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -205,29 +199,9 @@ public class Main_Form extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-
-    // КНОПКА ЕКСЕЛЯ
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
         new Object_Tabale().setVisible(true);
         dispose();
-
-//        try {
-//            Database db = new Database();
-//            // Заповняю ArrayList даними з методу getObject
-//             ArrayList<ExcelConstructor> list = new ArrayList<>(db.getObjects());
-//             System.out.println(list);
-//            String tmp_dir = "";
-//        
-//        Excel export = new Excel();
-//        
-//        export.ExportCount(tmp_dir + "excel.xlsx", list);
-//        
-//        new OSDetector().open(new File(tmp_dir+"excel.xlsx"));
-//   
-//        } catch (IOException | SQLException ex) {
-//            Logger.getLogger(Main_Form.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
