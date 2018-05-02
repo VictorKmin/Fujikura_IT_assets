@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class Database {
 
@@ -237,8 +238,6 @@ public class Database {
         }
     }
 
-    
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! USE FORM 2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public boolean updateObject2(transaction trans) throws SQLException {
         System.out.println("Я в методі updateObject1C");
         connection = DriverManager.getConnection(url, User, password);
