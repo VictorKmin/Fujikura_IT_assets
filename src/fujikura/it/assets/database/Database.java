@@ -225,7 +225,6 @@ public class Database {
         connection = DriverManager.getConnection(url, User, password);
         preparedStatement = connection.prepareStatement("INSERT INTO [stock].[dbo].[1C_IDs]([1C_ID],[status] )VALUES(?,0)");
         preparedStatement.setString(1, trans.getOneC_id());
-        System.out.println("Метод insertOneC вніс в базу");
         if (preparedStatement.executeUpdate() == 0) {
             System.out.println("Метод insertOneC return false");
             return false;

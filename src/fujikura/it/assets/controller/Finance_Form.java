@@ -13,7 +13,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +34,7 @@ public class Finance_Form extends javax.swing.JFrame {
     }
 
     File file;
-    HashSet<String> test = new HashSet<>();
+    ArrayList<String> test = new ArrayList<>();
     transaction trans = new transaction();
     transaction trans2 = new transaction();
 
@@ -43,7 +43,7 @@ public class Finance_Form extends javax.swing.JFrame {
         String oneC_id = jTextField1.getText().trim();
         if (file != null) {
             parse(String.valueOf(file));
-            insertFromFile();
+//            insertFromFile();
             jLabel13.setVisible(true);
 
         } else {
@@ -64,28 +64,29 @@ public class Finance_Form extends javax.swing.JFrame {
         Database db = new Database();
         trans.setOneC_id(oneC_id);
         trans2.setUser(Login_Form.username);
-         trans2.setId_action(0);
+        trans2.setId_action(0);
         db.insertOneC(trans);
         db.trans1C(trans2);
-        System.out.println("Все воркає");
     }
 
-    public void insertFromFile() throws IOException, SQLException {
+//    public void insertFromFile() throws IOException, SQLException {
+//        Database db = new Database();
+//        Iterator<String> iterator = test.iterator();
+//        while (iterator.hasNext()) {
+//            trans.setOneC_id(iterator.next());
+//            trans.setUser(Login_Form.username);
+//            db.insertOneC(trans);
+//        }
+//        trans2.setUser(Login_Form.username);
+//        trans2.setId_action(0);
+//
+//        db.trans1C(trans2);
+//        System.out.println("INSERT FROM FILE");
+//    }
+
+    public String parse(String name) throws IOException, SQLException {
+        
         Database db = new Database();
-        Iterator<String> iterator = test.iterator();
-        while (iterator.hasNext()) {
-            trans.setOneC_id(iterator.next());
-            trans.setUser(Login_Form.username);
-            db.insertOneC(trans);
-        }
-        trans2.setUser(Login_Form.username);
-         trans2.setId_action(0);
-
-        db.trans1C(trans2);
-        System.out.println("INSERT FROM FILE");
-    }
-
-    public String parse(String name) {
 
         String result = "";
         InputStream in = null;
@@ -107,7 +108,10 @@ public class Finance_Form extends javax.swing.JFrame {
                 int cellType = cell.getCellType();
                 switch (cellType) {
                     case Cell.CELL_TYPE_STRING:
-                        test.add(cell.getStringCellValue());
+//                        test.add(cell.getStringCellValue());
+                         trans.setOneC_id(cell.getStringCellValue());
+                         trans.setUser(Login_Form.username);
+                         db.insertOneC(trans);      
                         break;
                     default:
                         result += null;
@@ -115,6 +119,9 @@ public class Finance_Form extends javax.swing.JFrame {
                 }
             }
         }
+        trans2.setUser(Login_Form.username);
+        trans2.setId_action(0);
+        db.trans1C(trans2);
         return test.toString();
     }
 
@@ -351,6 +358,7 @@ public class Finance_Form extends javax.swing.JFrame {
         try {
             checkOneCId();
             file = null;
+            initComponents();
 
         } catch (IOException | SQLException ex) {
             Logger.getLogger(Finance_Form.class.getName()).log(Level.SEVERE, null, ex);
