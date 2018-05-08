@@ -18,30 +18,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Database {
 
-    private final String DBip = "localhost";
-    private final String DBip2 = "192.168.0.102";
+    private String DBip = "localhost";
+    private String DBip2 = "192.168.0.102";
     private String url = "jdbc:sqlserver://localhost:1433;databasename=stock";
-
-    private final String User = "sa";
-    private final String password = "hk7w2svu";
-
+    
+    private String User =  "sa"; 
+    private String password  = "hk7w2svu";
+    
     private Connection connection;
     private PreparedStatement preparedStatement;
-
-    public Database() throws IOException {
-        if (TestPort(DBip)) {
-            this.url = "jdbc:jtds:sqlserver://" + DBip + ":1433;databasename=stock";
-        } else {
-            this.url = "jdbc:jtds:sqlserver://" + DBip2 + ":1433;databasename=stock";
-        }
+    
+    public Database() {
+         try {
+             if (TestPort(DBip)){
+                 this.url="jdbc:jtds:sqlserver://"+DBip+":1433;databasename=stock";
+             }else{
+                 this.url="jdbc:jtds:sqlserver://"+DBip2+":1433;databasename=stock";
+             }
+         } catch (IOException ex) {
+             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
 
-
-    // Не доріс до цього методу
     public boolean TestPort(String ip) throws IOException {
         //test port
         try {
@@ -61,11 +64,9 @@ public class Database {
         return false;
     }
 
-    // Метод перевіряє версію програми з бази.
-    // Звідки взагалі береться u
-    public boolean Version(String u) throws SQLException, ClassNotFoundException {
+    public boolean Version(String u) throws SQLException {
         boolean valid = false;
-//           System.out.println("U = " + u);
+//        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         connection = DriverManager.getConnection(url, User, password);
         preparedStatement = connection.prepareStatement("SELECT [version] FROM [stock].[dbo].[version]");
         preparedStatement.executeQuery();
@@ -156,7 +157,6 @@ public class Database {
         return valid;
     }
 
-    // Метод який витягує права юзера по юзернейму
     public int Login_rights(String username) throws SQLException, ClassNotFoundException {
         int rights = 0;
         connection = DriverManager.getConnection(url, User, password);
@@ -178,7 +178,6 @@ public class Database {
         return rights;
     }
 
-    // Метод, який записує нові компи
     public boolean insertStock(Assets trans) throws SQLException {
         connection = DriverManager.getConnection(url, User, password);
         preparedStatement = connection.prepareStatement("INSERT INTO [stock].[dbo].[Object]([sn],[mod],[sup],[loc],[warranty],[tm],[dept])VALUES(?,?,?,?,?,?,?)");
@@ -199,9 +198,7 @@ public class Database {
         }
     }
 
-    
 
-    // Метод. що описує перевірку наявність 1С_ID в базі. З Use_Form
     public boolean OneCCheck(String oneC_id) throws SQLException {
         boolean valid = false;
         connection = DriverManager.getConnection(url, User, password);
@@ -221,7 +218,7 @@ public class Database {
         return valid;
     }
 
-    //Метод, який вносить нові 1С_ID з клавіатруи в Finance_Form
+
     public boolean insertOneC(transaction trans) throws SQLException {
         connection = DriverManager.getConnection(url, User, password);
         preparedStatement = connection.prepareStatement("INSERT INTO [stock].[dbo].[1C_IDs]([1C_ID],[status] )VALUES(?,0)");
@@ -259,7 +256,6 @@ public class Database {
         }
     }
 
-    // Метод, який обновляє статус при зєданні 1C_ID з SerialNumber
     public boolean updateStatus(transaction trans2) throws SQLException {
         connection = DriverManager.getConnection(url, User, password);
         preparedStatement = connection.prepareStatement("UPDATE [stock].[dbo].[1C_IDs] SET [status] = 1 WHERE [1C_ID] = ? ");
@@ -320,17 +316,11 @@ public class Database {
 
     }
     
-    // Робить ліст, в який вкладає данні через цикл з кожного стовця в БД
-       
-    // створює метод, в якому буде аррай ліст з параментрами from to ( мені не потрбіно )
     public ArrayList<ExcelConstructor> getObjects() throws SQLException {
-          // Створює сам аррай ліст
           ArrayList<ExcelConstructor> list = new ArrayList<>();
-          // Створює обєкт, який потім буде засувати в ліст
           ExcelConstructor object;
 
           connection = DriverManager.getConnection(url,User,password);
-          // стейтмент, в якому дістаємо все, шо нам треба занести в ексель
           preparedStatement = connection.prepareStatement("SELECT [sn],[sup],[loc],[warranty] ,[tm],[id_1CId],[mod],[dept] FROM [stock].[dbo].[Object]");
           preparedStatement.executeQuery();
           ResultSet result = preparedStatement.getResultSet(); 
@@ -340,7 +330,6 @@ public class Database {
                     object = new ExcelConstructor(result.getString("sn"),result.getString("sup"), 
                         result.getString("loc"),result.getInt("warranty"),result.getString("tm"),
                         result.getString("id_1CId"),result.getString("mod"),result.getString("dept"));
-                    // і той обєкт засуваємо в Аррай ліст
                     list.add(object);
                      System.out.println(object + "  цикл " + a++);
                 }
@@ -353,16 +342,12 @@ public class Database {
           return list;
     }
     
-    // Відбувається пошук обєкта по серійнику в Object_Table
     public ArrayList<ExcelConstructor> searchBySN(String serial) throws SQLException{
-        
-         // Створює сам аррай ліст
+
           ArrayList<ExcelConstructor> list = new ArrayList<>();
-          // Створює обєкт, який потім буде засувати в ліст
           ExcelConstructor object;
 
           connection = DriverManager.getConnection(url,User,password);
-          // стейтмент, в якому дістаємо все, шо нам треба занести в ексель
           preparedStatement = connection.prepareStatement("SELECT [sn],[sup],[loc],[warranty] ,[tm],[id_1CId],[mod],[dept] FROM [stock].[dbo].[Object] WHERE [sn] = ?");
           preparedStatement.setString(1, serial);
           preparedStatement.executeQuery();
@@ -373,7 +358,6 @@ public class Database {
                     object = new ExcelConstructor(result.getString("sn"),result.getString("sup"), 
                         result.getString("loc"),result.getInt("warranty"),result.getString("tm"),
                         result.getString("id_1CId"),result.getString("mod"),result.getString("dept"));
-                    // і той обєкт засуваємо в Аррай ліст
                     list.add(object);
                      System.out.println(object + "  цикл " + a++);
                 } 
@@ -388,13 +372,10 @@ public class Database {
     
     public ArrayList<ExcelConstructor> searchByLocation(String location) throws SQLException{
         
-         // Створює сам аррай ліст
           ArrayList<ExcelConstructor> list = new ArrayList<>();
-          // Створює обєкт, який потім буде засувати в ліст
           ExcelConstructor object;
 
           connection = DriverManager.getConnection(url,User,password);
-          // стейтмент, в якому дістаємо все, шо нам треба занести в ексель
           preparedStatement = connection.prepareStatement("SELECT [sn],[sup],[loc],[warranty] ,[tm],[id_1CId],[mod],[dept] FROM [stock].[dbo].[Object] WHERE [loc] = ?");
           preparedStatement.setString(1, location);
           preparedStatement.executeQuery();
@@ -405,7 +386,6 @@ public class Database {
                     object = new ExcelConstructor(result.getString("sn"),result.getString("sup"), 
                         result.getString("loc"),result.getInt("warranty"),result.getString("tm"),
                         result.getString("id_1CId"),result.getString("mod"),result.getString("dept"));
-                    // і той обєкт засуваємо в Аррай ліст
                     list.add(object);
                      System.out.println(object + "  цикл " + a++);
                 }
@@ -504,8 +484,8 @@ public class Database {
             return true;
         }
     }
-        
-        // Метод який записує транзакції
+
+
     public boolean transaction(transaction trans2) throws SQLException {
         connection = DriverManager.getConnection(url, User, password);
         preparedStatement = connection.prepareStatement("INSERT INTO [stock].[dbo].[transactions]([username],[sn],[action],[id_action],[tm])VALUES(?,?,?,?,?)");
