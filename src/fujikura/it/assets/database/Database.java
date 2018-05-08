@@ -51,9 +51,10 @@ public class Database {
             Socket test = new Socket();
             test.setSoTimeout(200);
             test.connect(new InetSocketAddress(ip, 1433), 55);
-
             test.close();
+
             return true;
+
         } catch (UnknownHostException e) {
             System.out.println("Невідовий хост " + ip);
             // unknown host
